@@ -1,0 +1,65 @@
+#mainGrid {
+  border: 1px solid rgb(199, 45, 45);
+  background-color: white;
+  height: 501px;
+  width: 501px;
+  display: grid;
+  grid-template-columns: repeat(9, 11.111111111%);
+  grid-template-rows: repeat(9, 11.111111111%);
+}
+
+div#mainGrid > div.selected {
+  background-color: lime;
+}
+
+#mainGrid > div {
+  text-align: center;
+  border: 1px solid gray;
+  font-size: 50px;
+  cursor: pointer;
+  /* cursor: default; */
+}
+
+#mainGrid > div:hover {
+  border: 5px solid gray;
+  padding-bottom: 10px;
+}
+
+/* .finishButton {
+  border: 5px solid black;
+  width: 496px;
+  height: 50px;
+  background-color: gray;
+} */
+
+.oddSeg {
+  background-color: lightgray;
+}
+
+/* body > div#mainGrid > div.empty {
+  font-size: 0%;
+  background-color: maroon;
+} */
+
+.segmentError,
+.rowError,
+.colError {
+  background-color: red;
+}
+
+#numButtons {
+  cursor: default;
+  margin: 5px;
+}
+
+#numButtons input {
+  cursor: pointer;
+  font-size: 52px;
+  background-color: lightgrey;
+}
+
+#numButtons input.selected {
+  background-color: darkblue;
+  font-size: 50px;
+  border: 5px solid black;
+}
