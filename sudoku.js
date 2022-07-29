@@ -47,9 +47,9 @@ function prepareGrid() {
       if (seg % 2) {
         cellDiv.classList.add('oddSeg');
       }
-      cellDiv.colProp = gridColumns[col];
-      cellDiv.rowProp = gridRows[row];
-      cellDiv.segprop = gridSegments[seg];
+      cellDiv.col = gridColumns[col];
+      cellDiv.row = gridRows[row];
+      cellDiv.seg = gridSegments[seg];
       gridCells.push(cellDiv);
       gridColumns[col].push(cellDiv);
       gridRows[row].push(cellDiv);
@@ -150,15 +150,15 @@ var options = Array(81)
 function getOptions() {
   gridCells.forEach((cell) => {
     colNums = Array(9).map((i) => {
-      cell.colProp[i.index].innerHTML;
+      cell.col[i.index].innerHTML;
     });
 
     rowNums = Array(9).map((i) => {
-      cell.rowProp[i.index].innerHTML;
+      cell.row[i.index].innerHTML;
     });
 
     segNums = Array(9).map((i) => {
-      cell.segProp[i.index].innerHTML;
+      cell.seg[i.index].innerHTML;
     });
 
     if (cell.innerHTML === '') {
