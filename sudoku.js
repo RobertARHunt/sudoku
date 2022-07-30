@@ -137,43 +137,56 @@ function handleNumClickEvent(eventArgs) {
   }
 );
 
-//
-//
-//
-//
-//
+////////////////////////////////////////
+////////////////////////////////////////
+////////////////////////////////////////
+////////
+////////
+////////
+////////
+////////////////////////
+////////////////////////
+////////////////////////
+////////////////////////
+////////
+////////
+////////
+////////
+////////////////////////////////////////
+////////////////////////////////////////
+////////////////////////////////////////
 
-var options = Array(81)
-  .fill(0)
-  .map(() => Array());
+//cus why not
 
-function getOptions() {
-  gridCells.forEach((cell) => {
-    colNums = Array(9).map((i) => {
-      cell.col[i.index].innerHTML;
-    });
+function getOptions(cellIndex) {
+  var options = [];
+  cell = gridCells[cellIndex];
+  colNums = Array(9).map((i) => {
+    cell.col[i.index].innerHTML;
+  });
 
-    rowNums = Array(9).map((i) => {
-      cell.row[i.index].innerHTML;
-    });
+  rowNums = Array(9).map((i) => {
+    cell.row[i.index].innerHTML;
+  });
 
-    segNums = Array(9).map((i) => {
-      cell.seg[i.index].innerHTML;
-    });
+  segNums = Array(9).map((i) => {
+    cell.seg[i.index].innerHTML;
+  });
 
-    if (cell.innerHTML === '') {
-      for (let option = 1; option <= 9; option++) {
-        optStr = option.toString();
-        if (
-          !colNums.contains(optStr) &&
-          !rowNums.contains(optStr) &&
-          !segNums.contains(optNums)
-        ) {
-          options[cell.index].push(option);
-        }
+  if (cell.innerHTML === '') {
+    for (let option = 1; option <= 9; option++) {
+      optStr = option.toString();
+      if (
+        colNums.includes(option) ||
+        rowNums.includes(option) ||
+        segNums.includes(option)
+      ) {
+      } else {
+        options.push(option);
       }
     }
-  });
+  }
+  return options;
 }
 
 function firstComplexity() {}
@@ -182,7 +195,6 @@ function secondComplexity() {}
 
 function autoFinish() {
   while (!checkCompletion()) {
-    getOptions(); // get the possible options for each cell
     firstComplexity(); // fill in any cells with only one option
     secondComplexity(); // find any number (more than one) of cells in a row, column or segment with any number (more than one) of common possibilities, if the number of common possibilities is one less than the number of cells in the row, column or segment with that number of common possibilities, and there is one that has one other option, that one must be filled with the extra option it has.
   }
