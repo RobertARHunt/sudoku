@@ -23,17 +23,17 @@ document.addEventListener('keyup', function (key) {
   }
 });
 
-var gridCells = Array(0);
-var gridColumns = Array(9)
+const gridCells = Array(0);
+const gridColumns = Array(9)
   .fill(0)
   .map(() => Array());
-var gridRows = Array(9)
+const gridRows = Array(9)
   .fill(0)
   .map(() => Array());
 /**
  * @type {HTMLDivElement[][]}
  */
-var gridSegments = Array(9)
+const gridSegments = Array(9)
   .fill(0)
   .map(() => Array());
 
