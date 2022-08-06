@@ -139,44 +139,32 @@ function handleNumClickEvent(eventArgs) {
   }
 );
 
-function getOptions(cellIndex) {
-  var options = [];
-  cell = gridCells[cellIndex];
-  colNums = Array(9).map((i) => {
-    cell.col[i.index].innerHTML;
-  });
-
-  rowNums = Array(9).map((i) => {
-    cell.row[i.index].innerHTML;
-  });
-
-  segNums = Array(9).map((i) => {
-    cell.seg[i.index].innerHTML;
-  });
-
-  if (cell.innerHTML === '') {
-    for (let option = 1; option <= 9; option++) {
-      optStr = option.toString();
-      if (
-        colNums.includes(option) ||
-        rowNums.includes(option) ||
-        segNums.includes(option)
-      ) {
-      } else {
-        options.push(option);
-      }
-    }
-  }
+function getOptions(celldiv) {
+  const optionsSet = new Set(['1', '2', '3', '4', '5', '6', '7', '8', '9']);
+  celldiv.col.forEach((c) => optionsSet.delete(c.innerHTML));
+  celldiv.row.forEach((c) => optionsSet.delete(c.innerHTML));
+  celldiv.seg.forEach((c) => optionsSet.delete(c.innerHTML));
+  const options = Array.from(optionsSet);
   return options;
 }
 
-function firstComplexity() {}
+function firstComplexity() {
+  gridCells.map((cell) => {
+    if (cell.innerHTML == '') {
+      if (getOptions(cell).length == 1) {
+        cell.innerHTML = getOptions(cell)[0];
+      }
+    }
+  });
+}
 
 function secondComplexity() {}
 
 function autoFinish() {
-  while (!checkCompletion()) {
-    firstComplexity(); // fill in any cells with only one option
-    secondComplexity(); // find any number (more than one) of cells in a row, column or segment with any number (more than one) of common possibilities, if the number of common possibilities is one less than the number of cells in the row, column or segment with that number of common possibilities, and there is one that has one other option, that one must be filled with the extra option it has.
-  }
+  firstComplexity(); // fill in any cells with only one option
+  // while (!checkCompletion()) {
+  //   firstComplexity(); // fill in any cells with only one option
+  //   secondComplexity(); // find any number (more than one) of cells in a row, column or segment with any number (more than one) of common possibilities, if the number of common possibilities is one less than the number of cells in the row, column or segment with that number of common possibilities, and there is one that has one other option, that one must be filled with the extra option it has.
+  // }
+}
 }
