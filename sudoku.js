@@ -2,7 +2,6 @@ const domMainGrid = document.getElementById('mainGrid');
 var selectedNum = '';
 
 document.addEventListener('keyup', function (key) {
-  console.log(key.code);
   if (
     key.code === 'Digit1' ||
     key.code === 'Digit2' ||
