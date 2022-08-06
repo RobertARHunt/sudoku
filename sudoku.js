@@ -167,4 +167,17 @@ function autoFinish() {
   //   secondComplexity(); // find any number (more than one) of cells in a row, column or segment with any number (more than one) of common possibilities, if the number of common possibilities is one less than the number of cells in the row, column or segment with that number of common possibilities, and there is one that has one other option, that one must be filled with the extra option it has.
   // }
 }
+
+function printGrid() {
+  console.log(
+    gridCells.map((c) => (c.innerHTML == '' ? ' ' : c.innerHTML)).join('')
+  );
 }
+
+function loadGrid(input) {
+  input.split('').forEach((v, i) => setCell(gridCells[i], v.trim()));
+}
+
+loadGrid(
+  `6 32 81 7   3 6   8  5 1  3584   679         716   4324  9 3  1   7 5   2 76 45 8`
+);
