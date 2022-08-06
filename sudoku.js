@@ -63,11 +63,12 @@ prepareGrid();
 
 function setCell(div, value) {
   div.innerHTML = value;
+
   checkCells(div.seg, 'segmentError');
   checkCells(div.row, 'rowError');
   checkCells(div.col, 'colError');
   if (checkCompletion()) {
-    alert('You Win!');
+    setTimeout(() => alert('You Win!'), 100);
   }
 }
 
