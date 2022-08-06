@@ -53,7 +53,7 @@ function prepareGrid() {
       gridColumns[col].push(cellDiv);
       gridRows[row].push(cellDiv);
       gridSegments[seg].push(cellDiv);
-      cellDiv.onclick = () => cellClick(cellDiv, col, row, seg);
+      cellDiv.onclick = () => cellClick(cellDiv);
       domMainGrid.appendChild(cellDiv);
     }
   }
@@ -61,15 +61,18 @@ function prepareGrid() {
 
 prepareGrid();
 
-function cellClick(div, col, row, seg) {
-  const cell = col + row * 9;
-  div.innerHTML = selectedNum;
-  checkCells(gridSegments[seg], 'segmentError');
-  checkCells(gridRows[row], 'rowError');
-  checkCells(gridColumns[col], 'colError');
+function setCell(div, value) {
+  div.innerHTML = value;
+  checkCells(div.seg, 'segmentError');
+  checkCells(div.row, 'rowError');
+  checkCells(div.col, 'colError');
   if (checkCompletion()) {
     alert('You Win!');
   }
+}
+
+function cellClick(div) {
+  setCell(div, selectedNum);
 }
 
 function checkCells(cells, errorClass) {
