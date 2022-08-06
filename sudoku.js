@@ -150,23 +150,25 @@ function getOptions(celldiv) {
 }
 
 function firstComplexity() {
-  gridCells.map((cell) => {
-    if (cell.innerHTML == '') {
-      if (getOptions(cell).length == 1) {
-        cell.innerHTML = getOptions(cell)[0];
+  var updated;
+  do {
+    updated = false;
+    gridCells.forEach((cell) => {
+      if (cell.innerHTML == '') {
+        const cellOptions = getOptions(cell);
+        if (cellOptions.length == 1) {
+          setCell(cell, cellOptions[0]);
+          updated = true;
+        }
       }
-    }
-  });
+    });
+  } while (updated);
 }
 
 function secondComplexity() {}
 
 function autoFinish() {
-  firstComplexity(); // fill in any cells with only one option
-  // while (!checkCompletion()) {
-  //   firstComplexity(); // fill in any cells with only one option
-  //   secondComplexity(); // find any number (more than one) of cells in a row, column or segment with any number (more than one) of common possibilities, if the number of common possibilities is one less than the number of cells in the row, column or segment with that number of common possibilities, and there is one that has one other option, that one must be filled with the extra option it has.
-  // }
+  firstComplexity();
 }
 
 function printGrid() {
