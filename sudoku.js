@@ -49,6 +49,7 @@ function prepareGrid() {
       cellDiv.col = gridColumns[col];
       cellDiv.row = gridRows[row];
       cellDiv.seg = gridSegments[seg];
+      cellDiv.options = [];
       gridCells.push(cellDiv);
       gridColumns[col].push(cellDiv);
       gridRows[row].push(cellDiv);
@@ -64,16 +65,20 @@ prepareGrid();
 function setCell(cellDiv, value) {
   cellDiv.innerHTML = value;
 
+  updateOptions(cellDiv);
+
   checkCells(cellDiv.seg, 'segmentError');
   checkCells(cellDiv.row, 'rowError');
   checkCells(cellDiv.col, 'colError');
+
   if (checkCompletion()) {
     setTimeout(() => alert('You Win!'), 100);
   }
 }
 
-function cellClick(div) {
-  setCell(div, selectedNum);
+function updateOptions(cellDiv) {
+  const cellDivs = new Set(cellDiv.row.concat(cellDiv.col, cellDiv.seg));
+  cellDivs.forEach((c) => (c.options = getOptions(c)));
 }
 
 function cellClick(cellDiv) {
@@ -145,6 +150,9 @@ function handleNumClickEvent(eventArgs) {
 );
 
 function getOptions(celldiv) {
+  if (celldiv.innerHTML != '') {
+    return [];
+  }
   const optionsSet = new Set(['1', '2', '3', '4', '5', '6', '7', '8', '9']);
   celldiv.col.forEach((c) => optionsSet.delete(c.innerHTML));
   celldiv.row.forEach((c) => optionsSet.delete(c.innerHTML));
@@ -154,19 +162,10 @@ function getOptions(celldiv) {
 }
 
 function firstComplexity() {
-  var updated;
-  do {
-    updated = false;
-    gridCells.forEach((c) => {
-      if (c.innerHTML == '') {
-        const cellOptions = getOptions(c);
-        if (cellOptions.length == 1) {
-          setCell(c, cellOptions[0]);
-          updated = true;
-        }
-      }
-    });
-  } while (updated);
+  var solvableCell;
+  while ((solvableCell = gridCells.find((c) => c.options.length == 1))) {
+    setCell(solvableCell, solvableCell.options[0]);
+  }
 }
 
 function secondComplexity() {
@@ -208,4 +207,4 @@ const EXAMPLES = {
   },
 };
 
-loadGrid(EXAMPLES.HARD.GRID_1);
+loadGrid(EXAMPLES.EASY.GRID_1);
