@@ -107,23 +107,9 @@ function checkCells(cellDivs, errorClass) {
 }
 
 function checkCompletion() {
-  if (gridColumns.every(checkCol)) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-function checkCol(col) {
-  return col.every(checkCell);
-}
-
-function checkCell(cellDiv) {
-  if (cellDiv.innerHTML == '' || cellDiv.classList.contains('errorClass')) {
-    return false;
-  } else {
-    return true;
-  }
+  return gridCells.every(
+    (cellDiv) => cellDiv.innerHTML != '' && !cellDiv.className.includes('Error')
+  );
 }
 
 function handleNumClickEvent(eventArgs) {
@@ -172,8 +158,6 @@ function solveByGroupElimination() {
   gridCells
     .filter((cellDiv) => cellDiv.innerHTML == '')
     .forEach((cellDiv) => {
-      // debugger;
-
       let optionsSet = groupElimination(cellDiv.col, cellDiv);
       if (optionsSet.size == 1) {
         setCell(cellDiv, Array.from(optionsSet)[0]);
@@ -202,6 +186,7 @@ function groupElimination(group, cellDiv) {
 }
 
 function autoFinish() {
+  // TODO: This needs to keep going until the grid is solved!
   solveByElimination();
   solveByGroupElimination();
 }
