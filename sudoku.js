@@ -168,18 +168,42 @@ function solveByElimination() {
   }
 }
 
-function secondComplexity() {
-  /* To solve this we want to change the current solution.
-   ** We will need to know the options for may cells repeatedly.
-   ** This means it would be useful to have this information always available.
-   **
-   ** > We might want to regenerate cell options for a Cell/Row/Grid any time a cell value is changed.
-   **
-   */
+function solveByGroupElimination() {
+  gridCells
+    .filter((cellDiv) => cellDiv.innerHTML == '')
+    .forEach((cellDiv) => {
+      // debugger;
+
+      let optionsSet = groupElimination(cellDiv.col, cellDiv);
+      if (optionsSet.size == 1) {
+        setCell(cellDiv, Array.from(optionsSet)[0]);
+      } else {
+        optionsSet = groupElimination(cellDiv.row, cellDiv);
+        if (optionsSet.size == 1) {
+          setCell(cellDiv, Array.from(optionsSet)[0]);
+        } else {
+          optionsSet = groupElimination(cellDiv.seg, cellDiv);
+          if (optionsSet.size == 1) {
+            setCell(cellDiv, Array.from(optionsSet)[0]);
+          }
+        }
+      }
+    });
+}
+
+function groupElimination(group, cellDiv) {
+  const optionsSet = new Set(cellDiv.options);
+  group.forEach((c) => {
+    if (c != cellDiv) {
+      c.options.forEach((o) => optionsSet.delete(o));
+    }
+  });
+  return optionsSet;
 }
 
 function autoFinish() {
   solveByElimination();
+  solveByGroupElimination();
 }
 
 function printGrid() {
@@ -207,4 +231,4 @@ const EXAMPLES = {
   },
 };
 
-loadGrid(EXAMPLES.EASY.GRID_1);
+loadGrid(EXAMPLES.MODERATE.GRID_1);
