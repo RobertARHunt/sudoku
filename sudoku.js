@@ -191,7 +191,8 @@ function loadGrid(input) {
 
 const EXAMPLES = {
   EASY: {
-    GRID_1: `6 32 81 7   3 6   8  5 1  3584   679         716   4324  9 3  1   7 5   2 76 45 8`,
+    GRID_1:
+      '6 32 81 7   3 6   8  5 1  3584   679         716   4324  9 3  1   7 5   2 76 45 8',
   },
   MODERATE: {
     GRID_1:
