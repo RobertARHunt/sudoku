@@ -61,12 +61,12 @@ function prepareGrid() {
 
 prepareGrid();
 
-function setCell(div, value) {
-  div.innerHTML = value;
+function setCell(cellDiv, value) {
+  cellDiv.innerHTML = value;
 
-  checkCells(div.seg, 'segmentError');
-  checkCells(div.row, 'rowError');
-  checkCells(div.col, 'colError');
+  checkCells(cellDiv.seg, 'segmentError');
+  checkCells(cellDiv.row, 'rowError');
+  checkCells(cellDiv.col, 'colError');
   if (checkCompletion()) {
     setTimeout(() => alert('You Win!'), 100);
   }
@@ -76,15 +76,19 @@ function cellClick(div) {
   setCell(div, selectedNum);
 }
 
-function checkCells(cells, errorClass) {
-  const values = cells.map((div) => div.innerHTML);
+function cellClick(cellDiv) {
+  setCell(cellDiv, selectedNum);
+}
+
+function checkCells(cellDivs, errorClass) {
+  const values = cellDivs.map((c) => c.innerHTML);
   const valSet = new Set();
   for (let i = 0; i < 9; i++) {
     const val = values[i];
     if (val != '') {
       if (valSet.has(val)) {
-        cells.forEach((cell) => {
-          cell.classList.add(errorClass);
+        cellDivs.forEach((c) => {
+          c.classList.add(errorClass);
         });
         return;
       } else {
@@ -92,8 +96,8 @@ function checkCells(cells, errorClass) {
       }
     }
   }
-  cells.forEach((cell) => {
-    cell.classList.remove(errorClass);
+  cellDivs.forEach((c) => {
+    c.classList.remove(errorClass);
   });
 }
 
@@ -109,8 +113,8 @@ function checkCol(col) {
   return col.every(checkCell);
 }
 
-function checkCell(cell) {
-  if (cell.innerHTML == '' || cell.classList.contains('errorClass')) {
+function checkCell(cellDiv) {
+  if (cellDiv.innerHTML == '' || cellDiv.classList.contains('errorClass')) {
     return false;
   } else {
     return true;
@@ -153,11 +157,11 @@ function firstComplexity() {
   var updated;
   do {
     updated = false;
-    gridCells.forEach((cell) => {
-      if (cell.innerHTML == '') {
-        const cellOptions = getOptions(cell);
+    gridCells.forEach((c) => {
+      if (c.innerHTML == '') {
+        const cellOptions = getOptions(c);
         if (cellOptions.length == 1) {
-          setCell(cell, cellOptions[0]);
+          setCell(c, cellOptions[0]);
           updated = true;
         }
       }
