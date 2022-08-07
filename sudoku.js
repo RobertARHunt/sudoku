@@ -165,7 +165,15 @@ function firstComplexity() {
   } while (updated);
 }
 
-function secondComplexity() {}
+function secondComplexity() {
+  /* To solve this we want to change the current solution.
+   ** We will need to know the options for may cells repeatedly.
+   ** This means it would be useful to have this information always available.
+   **
+   ** > We might want to regenerate cell options for a Cell/Row/Grid any time a cell value is changed.
+   **
+   */
+}
 
 function autoFinish() {
   firstComplexity();
@@ -189,6 +197,10 @@ const EXAMPLES = {
     GRID_1:
       '47    36 6  4 2  9     32 4 8  7 94    3 6    54 2  1 7 18     9  6 4  7 45    91',
   },
+  HARD: {
+    GRID_1:
+      ' 2 6  4   137         3    9   8 6   5 4 2 9   7 9   8    1     4   825   9  6 7 ',
+  },
 };
 
-loadGrid(EXAMPLES.MODERATE.GRID_1);
+loadGrid(EXAMPLES.HARD.GRID_1);
