@@ -161,7 +161,7 @@ function getOptions(celldiv) {
   return options;
 }
 
-function firstComplexity() {
+function solveByElimination() {
   var solvableCell;
   while ((solvableCell = gridCells.find((c) => c.options.length == 1))) {
     setCell(solvableCell, solvableCell.options[0]);
@@ -179,7 +179,7 @@ function secondComplexity() {
 }
 
 function autoFinish() {
-  firstComplexity();
+  solveByElimination();
 }
 
 function printGrid() {
