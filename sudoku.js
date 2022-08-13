@@ -49,7 +49,7 @@ function prepareGrid() {
       cellDiv.col = gridColumns[col];
       cellDiv.row = gridRows[row];
       cellDiv.seg = gridSegments[seg];
-      cellDiv.options = [];
+      cellDiv.options = new Set();
       gridCells.push(cellDiv);
       gridColumns[col].push(cellDiv);
       gridRows[row].push(cellDiv);
@@ -70,19 +70,22 @@ function setCell(cellDiv, value) {
   checkCells(cellDiv.seg, 'segmentError');
   checkCells(cellDiv.row, 'rowError');
   checkCells(cellDiv.col, 'colError');
-
-  if (checkCompletion()) {
-    setTimeout(() => alert('You Win!'), 100);
-  }
 }
 
 function updateOptions(cellDiv) {
   const cellDivs = new Set(cellDiv.row.concat(cellDiv.col, cellDiv.seg));
-  cellDivs.forEach((c) => (c.options = getOptions(c)));
+  cellDivs.forEach((c) => {
+    c.options = getOptions(c);
+    c.title = [...c.options].join();
+  });
 }
 
 function cellClick(cellDiv) {
   setCell(cellDiv, selectedNum);
+
+  if (checkCompletion()) {
+    setTimeout(() => alert('You Win!'), 100);
+  }
 }
 
 function checkCells(cellDivs, errorClass) {
@@ -137,58 +140,116 @@ function handleNumClickEvent(eventArgs) {
 
 function getOptions(celldiv) {
   if (celldiv.innerHTML != '') {
-    return [];
+    return new Set();
   }
-  const optionsSet = new Set(['1', '2', '3', '4', '5', '6', '7', '8', '9']);
-  celldiv.col.forEach((c) => optionsSet.delete(c.innerHTML));
-  celldiv.row.forEach((c) => optionsSet.delete(c.innerHTML));
-  celldiv.seg.forEach((c) => optionsSet.delete(c.innerHTML));
-  const options = Array.from(optionsSet);
+  const options = new Set(['1', '2', '3', '4', '5', '6', '7', '8', '9']);
+  celldiv.col.forEach((c) => options.delete(c.innerHTML));
+  celldiv.row.forEach((c) => options.delete(c.innerHTML));
+  celldiv.seg.forEach((c) => options.delete(c.innerHTML));
+
   return options;
 }
 
-function solveByElimination() {
-  var solvableCell;
-  while ((solvableCell = gridCells.find((c) => c.options.length == 1))) {
-    setCell(solvableCell, solvableCell.options[0]);
-  }
-}
-
-function solveByGroupElimination() {
-  gridCells
-    .filter((cellDiv) => cellDiv.innerHTML == '')
-    .forEach((cellDiv) => {
-      let optionsSet = groupElimination(cellDiv.col, cellDiv);
-      if (optionsSet.size == 1) {
-        setCell(cellDiv, Array.from(optionsSet)[0]);
+function solve() {
+  return gridCells
+    .reduce((acc, cellDiv) => {
+      if (cellDiv.innerHTML != '') {
+        return acc;
+      }
+      if (cellDiv.options.size == 1) {
+        acc.push({ cellDiv, value: [...cellDiv.options][0] });
+      }
+      let optionsRemaining = removeGroupOptions(cellDiv.col, cellDiv);
+      if (optionsRemaining.size == 1) {
+        acc.push({ cellDiv, value: [...optionsRemaining][0] });
       } else {
-        optionsSet = groupElimination(cellDiv.row, cellDiv);
-        if (optionsSet.size == 1) {
-          setCell(cellDiv, Array.from(optionsSet)[0]);
+        optionsRemaining = removeGroupOptions(cellDiv.row, cellDiv);
+        if (optionsRemaining.size == 1) {
+          acc.push({ cellDiv, value: [...optionsRemaining][0] });
         } else {
-          optionsSet = groupElimination(cellDiv.seg, cellDiv);
-          if (optionsSet.size == 1) {
-            setCell(cellDiv, Array.from(optionsSet)[0]);
+          optionsRemaining = removeGroupOptions(cellDiv.seg, cellDiv);
+          if (optionsRemaining.size == 1) {
+            acc.push({ cellDiv, value: [...optionsRemaining][0] });
           }
         }
       }
-    });
+      return acc;
+    }, [])
+    .reduce((acc, update) => {
+      setCell(update.cellDiv, update.value);
+      return acc + 1;
+    }, 0);
 }
 
-function groupElimination(group, cellDiv) {
-  const optionsSet = new Set(cellDiv.options);
+function removeGroupOptions(group, cellDiv) {
+  const optionsRemaining = new Set(cellDiv.options);
   group.forEach((c) => {
     if (c != cellDiv) {
-      c.options.forEach((o) => optionsSet.delete(o));
+      c.options.forEach((o) => optionsRemaining.delete(o));
     }
   });
-  return optionsSet;
+  return optionsRemaining;
+}
+
+function advancedEliminations() {
+  obviousSets();
+}
+
+function obviousSets() {
+  const gridGroups = [gridSegments, gridRows, gridColumns];
+  gridGroups.forEach((gridGroup) => {
+    gridGroup.forEach((group) => {
+      group.forEach((cellDiv) => {
+        const options = cellDiv.options;
+        if (options.size == 0) {
+          return;
+        }
+        const cellsWithSameOptions = group.filter((c) =>
+          optionsAreTheSame(options, c.options)
+        );
+        if (
+          options.size == cellsWithSameOptions.length &&
+          cellDiv == cellsWithSameOptions[0]
+        ) {
+          removeOptionsFromGroup(group, options, cellsWithSameOptions);
+        }
+      });
+    });
+  });
+}
+
+function optionsAreTheSame(first, second) {
+  return (
+    first.size == second.size &&
+    [...first].every((option) => second.has(option))
+  );
+}
+
+function removeOptionsFromGroup(group, options, excluding) {
+  group.forEach((cellDiv) => {
+    if (excluding.includes(cellDiv)) {
+      return;
+    }
+    [...options].forEach((o) => {
+      cellDiv.options.delete(o);
+      cellDiv.title = [...cellDiv.options].join();
+    });
+  });
 }
 
 function autoFinish() {
-  // TODO: This needs to keep going until the grid is solved!
-  solveByElimination();
-  solveByGroupElimination();
+  let loopCounter = 0;
+  while (!checkCompletion()) {
+    if (solve() == 0) {
+      advancedEliminations();
+    }
+
+    //We need this until we have written all of the advancedEliminations
+    if (++loopCounter >= 100) {
+      console.log(`autoFinish aborted after ${loopCounter} attempts!`);
+      return;
+    }
+  }
 }
 
 function printGrid() {
@@ -219,6 +280,10 @@ const EXAMPLES = {
       ' 2 6  4   137         3    9   8 6   5 4 2 9   7 9   8    1     4   825   9  6 7 ',
     GRID_2:
       ' 64 2 97    6 8   7       1 5     4 4  7 3  6 7     5 9       7   2 9    25 4 68 ',
+  },
+  TEST: {
+    OBVIOUS_SETS:
+      '  2 85  4    3  6   421  3        52      31 9        8    6   25 4    8     16  ',
   },
 };
 
