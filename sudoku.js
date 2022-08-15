@@ -159,15 +159,15 @@ function solve() {
       if (cellDiv.options.size == 1) {
         acc.push({ cellDiv, value: [...cellDiv.options][0] });
       }
-      let optionsRemaining = removeGroupOptions(cellDiv.col, cellDiv);
+      let optionsRemaining = getCellsUniqueOptions(cellDiv, cellDiv.col);
       if (optionsRemaining.size == 1) {
         acc.push({ cellDiv, value: [...optionsRemaining][0] });
       } else {
-        optionsRemaining = removeGroupOptions(cellDiv.row, cellDiv);
+        optionsRemaining = getCellsUniqueOptions(cellDiv, cellDiv.row);
         if (optionsRemaining.size == 1) {
           acc.push({ cellDiv, value: [...optionsRemaining][0] });
         } else {
-          optionsRemaining = removeGroupOptions(cellDiv.seg, cellDiv);
+          optionsRemaining = getCellsUniqueOptions(cellDiv, cellDiv.seg);
           if (optionsRemaining.size == 1) {
             acc.push({ cellDiv, value: [...optionsRemaining][0] });
           }
@@ -181,14 +181,14 @@ function solve() {
     }, 0);
 }
 
-function removeGroupOptions(group, cellDiv) {
-  const optionsRemaining = new Set(cellDiv.options);
+function getCellsUniqueOptions(cellDiv, group) {
+  const cellsOptions = new Set(cellDiv.options);
   group.forEach((c) => {
     if (c != cellDiv) {
-      c.options.forEach((o) => optionsRemaining.delete(o));
+      [...c.options].forEach((o) => cellsOptions.delete(o));
     }
   });
-  return optionsRemaining;
+  return cellsOptions;
 }
 
 function advancedEliminations() {
@@ -304,4 +304,4 @@ const EXAMPLES = {
   },
 };
 
-loadGrid(EXAMPLES.HARD.GRID_1);
+loadGrid(EXAMPLES.HARD.GRID_2);
