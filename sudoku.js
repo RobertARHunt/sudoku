@@ -199,33 +199,48 @@ function obviousSets() {
   const gridGroups = [gridSegments, gridRows, gridColumns];
   gridGroups.forEach((gridGroup) => {
     gridGroup.forEach((group) => {
-      group.forEach((cellDiv) => {
-        const options = cellDiv.options;
-        if (options.size == 0) {
-          return;
-        }
-        const cellsWithSameOptions = group.filter((c) =>
-          optionsAreTheSame(options, c.options)
+      const maxSize = group.filter((cellDiv) => cellDiv.innerHTML == '').length;
+      for (let setSize = 2; setSize < maxSize; setSize++) {
+        const cellsToSearch = group.filter(
+          (cellDiv) =>
+            cellDiv.options.size > 1 && cellDiv.options.size <= setSize
         );
-        if (
-          options.size == cellsWithSameOptions.length &&
-          cellDiv == cellsWithSameOptions[0]
-        ) {
-          removeOptionsFromGroup(group, options, cellsWithSameOptions);
-        }
-      });
+        getCombinations(cellsToSearch, setSize).forEach((combination) => {
+          const combinationOptions = mergedCellOptions(combination);
+
+          if (combinationOptions.size == setSize) {
+            removeOptionsFromGroup(group, combinationOptions, combination);
+          }
+        });
+      }
     });
   });
 }
 
-function optionsAreTheSame(first, second) {
-  return (
-    first.size == second.size &&
-    [...first].every((option) => second.has(option))
-  );
+function mergedCellOptions(cellDivs) {
+  return new Set(cellDivs.flatMap((c) => [...c.options]));
 }
 
-function removeOptionsFromGroup(group, options, excluding) {
+function getCombinations(array, size) {
+  if (array.length < size) return [];
+
+  const result = [];
+
+  for (let index = 0; index < array.length; index++) {
+    const element = array[index];
+    if (size == 1) {
+      result.push([element]);
+    } else {
+      const remaining = array.slice(index + 1);
+      const next = getCombinations(remaining, size - 1);
+      next.forEach((n) => result.push([element, ...n]));
+    }
+  }
+
+  return result;
+}
+
+function removeOptionsFromGroup(group, options, excluding = []) {
   group.forEach((cellDiv) => {
     if (excluding.includes(cellDiv)) {
       return;
@@ -284,7 +299,9 @@ const EXAMPLES = {
   TEST: {
     OBVIOUS_SETS:
       '  2 85  4    3  6   421  3        52      31 9        8    6   25 4    8     16  ',
+    OBVIOUS_TRIPLES:
+      '37     9 9   7       42   6  1 842           8  6   5   6  2 1        39 5    4  ',
   },
 };
 
-loadGrid(EXAMPLES.HARD.GRID_2);
+loadGrid(EXAMPLES.HARD.GRID_1);
