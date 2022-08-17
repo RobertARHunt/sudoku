@@ -193,6 +193,7 @@ function getCellsUniqueOptions(cellDiv, group) {
 
 function advancedEliminations() {
   obviousSets();
+  hiddenSets();
 }
 
 function obviousSets() {
@@ -210,6 +211,35 @@ function obviousSets() {
 
           if (combinationOptions.size == setSize) {
             removeOptionsFromGroup(group, combinationOptions, combination);
+          }
+        });
+      }
+    });
+  });
+}
+
+function hiddenSets() {
+  const gridGroups = [gridSegments, gridRows, gridColumns];
+  gridGroups.forEach((gridGroup) => {
+    gridGroup.forEach((group) => {
+      const maxSize = group.filter((cellDiv) => cellDiv.innerHTML == '').length;
+      for (
+        let combinationSize = 2;
+        combinationSize < maxSize;
+        combinationSize++
+      ) {
+        const cellsToSearch = group.filter(
+          (cellDiv) => cellDiv.options.size >= 1
+        );
+        getCombinations(
+          [...mergedCellOptions(cellsToSearch)],
+          combinationSize
+        ).forEach((combination) => {
+          const cellsWithCombination = group.filter((cellDiv) =>
+            combination.some((option) => cellDiv.options.has(option))
+          );
+          if (cellsWithCombination.length == combinationSize) {
+            removeOptionsFromCells(cellsWithCombination, combination);
           }
         });
       }
@@ -240,14 +270,24 @@ function getCombinations(array, size) {
   return result;
 }
 
-function removeOptionsFromGroup(group, options, excluding = []) {
+function removeOptionsFromGroup(group, optionsToRemove, excludingCells = []) {
   group.forEach((cellDiv) => {
-    if (excluding.includes(cellDiv)) {
+    if (excludingCells.includes(cellDiv)) {
       return;
     }
-    [...options].forEach((o) => {
-      cellDiv.options.delete(o);
+    [...optionsToRemove].forEach((option) => {
+      cellDiv.options.delete(option);
       cellDiv.title = [...cellDiv.options].join();
+    });
+  });
+}
+
+function removeOptionsFromCells(cellDivs, optionsToKeep = []) {
+  cellDivs.forEach((cellDiv) => {
+    [...cellDiv.options].forEach((option) => {
+      if (!optionsToKeep.includes(option)) {
+        cellDiv.options.delete(option);
+      }
     });
   });
 }
@@ -301,6 +341,8 @@ const EXAMPLES = {
       '  2 85  4    3  6   421  3        52      31 9        8    6   25 4    8     16  ',
     OBVIOUS_TRIPLES:
       '37     9 9   7       42   6  1 842           8  6   5   6  2 1        39 5    4  ',
+    HIDDEN_SETS:
+      '  9 32      7     162       1  2 56    9      5    1 7      4 3 26  9     587    ',
   },
 };
 
