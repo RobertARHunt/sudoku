@@ -50,6 +50,9 @@ function prepareGrid() {
       cellDiv.row = gridRows[row];
       cellDiv.seg = gridSegments[seg];
       cellDiv.options = new Set();
+      cellDiv.rowNum = row;
+      cellDiv.colNum = col;
+      cellDiv.segNum = seg;
       gridCells.push(cellDiv);
       gridColumns[col].push(cellDiv);
       gridRows[row].push(cellDiv);
@@ -247,6 +250,39 @@ function hiddenSets() {
   });
 }
 
+function pointingPairs() {
+  const group = gridSegments[0];
+  const allUniqueOptions = mergedCellOptions(group);
+  // allUniqueOptions.forEach((option) => {
+  const option = '4';
+  const cellsWithOption = group.filter((cellDiv) =>
+    cellDiv.options.has(option)
+  );
+  console.log({ group }, { cellsWithOption });
+  if (
+    cellsWithOption.length > 0 &&
+    cellsWithOption.every((cellDiv) => cellDiv.col == cellsWithOption[0].col)
+  ) {
+    removeOptionsFromGroup(cellsWithOption[0].col, option, cellsWithOption);
+    console.log({ option, cellsWithOption });
+  }
+  if (
+    cellsWithOption.length > 0 &&
+    cellsWithOption.every((cellDiv) => cellDiv.row == cellsWithOption[0].row)
+  ) {
+    removeOptionsFromGroup(cellsWithOption[0].row, option, cellsWithOption);
+    console.log({ option, cellsWithOption });
+  }
+  if (
+    cellsWithOption.length > 0 &&
+    cellsWithOption.every((cellDiv) => cellDiv.seg == cellsWithOption[0].seg)
+  ) {
+    removeOptionsFromGroup(cellsWithOption[0].seg, option, cellsWithOption);
+    console.log({ option, cellsWithOption });
+  }
+  // });
+}
+
 function mergedCellOptions(cellDivs) {
   return new Set(cellDivs.flatMap((c) => [...c.options]));
 }
@@ -287,6 +323,7 @@ function removeOptionsFromCells(cellDivs, optionsToKeep = []) {
     [...cellDiv.options].forEach((option) => {
       if (!optionsToKeep.includes(option)) {
         cellDiv.options.delete(option);
+        cellDiv.title = [...cellDiv.options].join();
       }
     });
   });
@@ -343,7 +380,9 @@ const EXAMPLES = {
       '37     9 9   7       42   6  1 842           8  6   5   6  2 1        39 5    4  ',
     HIDDEN_SETS:
       '  9 32      7     162       1  2 56    9      5    1 7      4 3 26  9     587    ',
+    POINTING_PAIRS:
+      '  9 7     8 4       3    281     67  2  13 4  4   78  6   3     1             284',
   },
 };
 
-loadGrid(EXAMPLES.HARD.GRID_2);
+loadGrid(EXAMPLES.TEST.POINTING_PAIRS);
