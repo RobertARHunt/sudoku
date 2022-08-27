@@ -159,20 +159,6 @@ function solve() {
       if (cellDiv.options.size == 1) {
         acc.push({ cellDiv, value: [...cellDiv.options][0] });
       }
-      let optionsRemaining = getCellsUniqueOptions(cellDiv, cellDiv.col);
-      if (optionsRemaining.size == 1) {
-        acc.push({ cellDiv, value: [...optionsRemaining][0] });
-      } else {
-        optionsRemaining = getCellsUniqueOptions(cellDiv, cellDiv.row);
-        if (optionsRemaining.size == 1) {
-          acc.push({ cellDiv, value: [...optionsRemaining][0] });
-        } else {
-          optionsRemaining = getCellsUniqueOptions(cellDiv, cellDiv.seg);
-          if (optionsRemaining.size == 1) {
-            acc.push({ cellDiv, value: [...optionsRemaining][0] });
-          }
-        }
-      }
       return acc;
     }, [])
     .reduce((acc, update) => {
@@ -224,7 +210,7 @@ function hiddenSets() {
     gridGroup.forEach((group) => {
       const maxSize = group.filter((cellDiv) => cellDiv.innerHTML == '').length;
       for (
-        let combinationSize = 2;
+        let combinationSize = 1;
         combinationSize < maxSize;
         combinationSize++
       ) {
@@ -382,4 +368,4 @@ const EXAMPLES = {
   },
 };
 
-loadGrid(EXAMPLES.TEST.POINTING_PAIRS);
+loadGrid(EXAMPLES.MODERATE.GRID_1);
