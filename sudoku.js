@@ -174,6 +174,7 @@ function getCellsUniqueOptions(cellDiv, group) {
 function advancedEliminations() {
   obviousSets();
   hiddenSets();
+  pointingSets();
 }
 
 function obviousSets() {
@@ -227,37 +228,54 @@ function hiddenSets() {
   });
 }
 
-function pointingPairs() {
-  const group = gridSegments[0];
-  const allUniqueOptions = mergedCellOptions(group);
-  // allUniqueOptions.forEach((option) => {
-  const option = '4';
-  const cellsWithOption = group.filter((cellDiv) =>
-    cellDiv.options.has(option)
-  );
-  console.log({ group }, { cellsWithOption });
-  if (
-    cellsWithOption.length > 0 &&
-    cellsWithOption.every((cellDiv) => cellDiv.col == cellsWithOption[0].col)
-  ) {
-    removeOptionsFromGroup(cellsWithOption[0].col, option, cellsWithOption);
-    console.log({ option, cellsWithOption });
-  }
-  if (
-    cellsWithOption.length > 0 &&
-    cellsWithOption.every((cellDiv) => cellDiv.row == cellsWithOption[0].row)
-  ) {
-    removeOptionsFromGroup(cellsWithOption[0].row, option, cellsWithOption);
-    console.log({ option, cellsWithOption });
-  }
-  if (
-    cellsWithOption.length > 0 &&
-    cellsWithOption.every((cellDiv) => cellDiv.seg == cellsWithOption[0].seg)
-  ) {
-    removeOptionsFromGroup(cellsWithOption[0].seg, option, cellsWithOption);
-    console.log({ option, cellsWithOption });
-  }
-  // });
+function pointingSets() {
+  const gridGroups = [gridSegments, gridRows, gridColumns];
+  gridGroups.forEach((gridGroup) => {
+    gridGroup.forEach((group) => {
+      const allUniqueOptions = mergedCellOptions(group);
+      allUniqueOptions.forEach((option) => {
+        const cellsWithOption = group.filter((cellDiv) =>
+          cellDiv.options.has(option)
+        );
+        if (gridGroup == gridSegments) {
+          if (
+            cellsWithOption.length > 1 &&
+            cellsWithOption.every(
+              (cellDiv) => cellDiv.col == cellsWithOption[0].col
+            )
+          ) {
+            removeOptionsFromGroup(
+              cellsWithOption[0].col,
+              option,
+              cellsWithOption
+            );
+          } else if (
+            cellsWithOption.length > 1 &&
+            cellsWithOption.every(
+              (cellDiv) => cellDiv.row == cellsWithOption[0].row
+            )
+          ) {
+            removeOptionsFromGroup(
+              cellsWithOption[0].row,
+              option,
+              cellsWithOption
+            );
+          }
+        } else if (
+          cellsWithOption.length > 1 &&
+          cellsWithOption.every(
+            (cellDiv) => cellDiv.seg == cellsWithOption[0].seg
+          )
+        ) {
+          removeOptionsFromGroup(
+            cellsWithOption[0].seg,
+            option,
+            cellsWithOption
+          );
+        }
+      });
+    });
+  });
 }
 
 function mergedCellOptions(cellDivs) {
@@ -362,4 +380,4 @@ const EXAMPLES = {
   },
 };
 
-loadGrid(EXAMPLES.MODERATE.GRID_1);
+loadGrid(EXAMPLES.HARD.GRID_2);
