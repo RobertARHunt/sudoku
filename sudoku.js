@@ -50,9 +50,6 @@ function prepareGrid() {
       cellDiv.row = gridRows[row];
       cellDiv.seg = gridSegments[seg];
       cellDiv.options = new Set();
-      cellDiv.rowNum = row;
-      cellDiv.colNum = col;
-      cellDiv.segNum = seg;
       gridCells.push(cellDiv);
       gridColumns[col].push(cellDiv);
       gridRows[row].push(cellDiv);
