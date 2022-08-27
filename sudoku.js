@@ -151,20 +151,14 @@ function getOptions(celldiv) {
 }
 
 function solve() {
-  return gridCells
-    .reduce((acc, cellDiv) => {
-      if (cellDiv.innerHTML != '') {
-        return acc;
-      }
-      if (cellDiv.options.size == 1) {
-        acc.push({ cellDiv, value: [...cellDiv.options][0] });
-      }
-      return acc;
-    }, [])
-    .reduce((acc, update) => {
-      setCell(update.cellDiv, update.value);
-      return acc + 1;
-    }, 0);
+  const solutions = gridCells.reduce((acc, cellDiv) => {
+    if (cellDiv.options.size == 1) {
+      acc.push({ cellDiv, value: [...cellDiv.options][0] });
+    }
+    return acc;
+  }, []);
+  solutions.forEach((s) => setCell(s.cellDiv, s.value));
+  return solutions.length;
 }
 
 function getCellsUniqueOptions(cellDiv, group) {
