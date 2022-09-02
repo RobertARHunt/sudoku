@@ -175,6 +175,7 @@ function advancedEliminations() {
   obviousSets();
   hiddenSets();
   pointingSets();
+  xWing();
 }
 
 function obviousSets() {
@@ -278,6 +279,61 @@ function pointingSets() {
   });
 }
 
+function xWing() {
+  const gridGroups = [gridRows, gridColumns];
+  gridGroups.forEach((gridGroup) => {
+    for (let option = 1; option <= 9; option++) {
+      const candidateGroups = gridGroup
+        .map((group) => ({
+          group,
+          optionIndeces: optionIndeces(group, option.toString()),
+        }))
+        .filter(({ optionIndeces }) => optionIndeces.length == 2);
+      const combinations = getCombinations(candidateGroups, 2).filter(
+        (combination) =>
+          combination[0].optionIndeces == combination[1].optionIndeces
+      );
+      combinations.forEach((combination) => {
+        const optionIndecesArray = combination[0].optionIndeces
+          .split('')
+          .map(Number);
+        const cellsInXWing = combination[0].optionIndeces
+          .split('')
+          .map(Number)
+          .flatMap((ix) => [
+            combination[0].group[ix],
+            combination[1].group[ix],
+          ]);
+        if (gridGroup == gridRows) {
+          cellsInXWing
+            .map((cellDiv) => cellDiv.col)
+            .filter(onlyUnique)
+            .forEach((col) =>
+              removeOptionsFromGroup(col, [option.toString()], cellsInXWing)
+            );
+        } else {
+          cellsInXWing
+            .map((cellDiv) => cellDiv.row)
+            .filter(onlyUnique)
+            .forEach((row) =>
+              removeOptionsFromGroup(row, [option.toString()], cellsInXWing)
+            );
+        }
+      });
+    }
+  });
+}
+
+function optionIndeces(cellDivs, option) {
+  return cellDivs.reduce((acc, cellDiv, ix) => {
+    if (cellDiv.options.has(option)) {
+      return acc + ix.toString();
+    } else {
+      return acc;
+    }
+  }, '');
+}
+
 function mergedCellOptions(cellDivs) {
   return new Set(cellDivs.flatMap((c) => [...c.options]));
 }
@@ -322,6 +378,10 @@ function removeOptionsFromCells(cellDivs, optionsToKeep = []) {
       }
     });
   });
+}
+
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
 }
 
 function autoFinish() {
@@ -377,6 +437,8 @@ const EXAMPLES = {
       '  9 32      7     162       1  2 56    9      5    1 7      4 3 26  9     587    ',
     POINTING_PAIRS:
       '  9 7     8 4       3    281     67  2  13 4  4   78  6   3     1             284',
+    X_WING:
+      '  38  51   87  93 1  3 5728   2  8498 19 6257   5  163964127385382659471 1 4  692',
   },
 };
 
