@@ -138,14 +138,14 @@ function handleNumClickEvent(eventArgs) {
   }
 );
 
-function getOptions(celldiv) {
-  if (celldiv.innerHTML != '') {
+function getOptions(cellDiv) {
+  if (cellDiv.innerHTML != '') {
     return new Set();
   }
   const options = new Set(['1', '2', '3', '4', '5', '6', '7', '8', '9']);
-  celldiv.col.forEach((c) => options.delete(c.innerHTML));
-  celldiv.row.forEach((c) => options.delete(c.innerHTML));
-  celldiv.seg.forEach((c) => options.delete(c.innerHTML));
+  cellDiv.col.forEach((c) => options.delete(c.innerHTML));
+  cellDiv.row.forEach((c) => options.delete(c.innerHTML));
+  cellDiv.seg.forEach((c) => options.delete(c.innerHTML));
 
   return options;
 }
@@ -159,16 +159,6 @@ function solve() {
   }, []);
   solutions.forEach((s) => setCell(s.cellDiv, s.value));
   return solutions.length;
-}
-
-function getCellsUniqueOptions(cellDiv, group) {
-  const cellsOptions = new Set(cellDiv.options);
-  group.forEach((c) => {
-    if (c != cellDiv) {
-      [...c.options].forEach((o) => cellsOptions.delete(o));
-    }
-  });
-  return cellsOptions;
 }
 
 function advancedEliminations() {
