@@ -6,6 +6,7 @@
   display: grid;
   grid-template-columns: repeat(9, 11.111111111%);
   grid-template-rows: repeat(9, 11.111111111%);
+  position: fixed;
 }
 
 div#mainGrid > div.selected {
@@ -15,14 +16,37 @@ div#mainGrid > div.selected {
 #mainGrid > div {
   text-align: center;
   border: 1px solid gray;
-  font-size: 50px;
   cursor: pointer;
-  /* cursor: default; */
+  position: relative;
 }
 
+#mainGrid > div > div {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+}
+/* 
 #mainGrid > div:hover {
   border: 5px solid gray;
-  padding-bottom: 10px;
+}
+
+#mainGrid > div:hover > div {
+  top: -4px;
+} 
+*/
+.CellOptions {
+  font-size: 16px;
+  font-family: monospace;
+  vertical-align: top;
+  padding-left: 7%;
+  overflow-wrap: break-word;
+  letter-spacing: 0.5rem;
+  opacity: 0.6;
+}
+
+.CellValue {
+  font-size: 50px;
 }
 
 /* .finishButton {

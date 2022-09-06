@@ -41,20 +41,30 @@ function prepareGrid() {
   for (let row = 0; row < 9; row++) {
     for (let col = 0; col < 9; col++) {
       const seg = Math.floor(col / 3) + 3 * Math.floor(row / 3);
+
       const cellDiv = document.createElement('div');
-      cellDiv.textContent = '';
-      if (seg % 2) {
-        cellDiv.classList.add('oddSeg');
-      }
       cellDiv.col = gridColumns[col];
       cellDiv.row = gridRows[row];
       cellDiv.seg = gridSegments[seg];
       cellDiv.options = new Set();
+      cellDiv.onclick = () => cellClick(cellDiv);
+      if (seg % 2) {
+        cellDiv.classList.add('oddSeg');
+      }
+
+      cellDiv.valueDiv = document.createElement('div');
+      cellDiv.valueDiv.classList.add('CellValue');
+      cellDiv.appendChild(cellDiv.valueDiv);
+
+      cellDiv.optionDiv = document.createElement('div');
+      cellDiv.optionDiv.classList.add('CellOptions');
+      cellDiv.appendChild(cellDiv.optionDiv);
+
       gridCells.push(cellDiv);
       gridColumns[col].push(cellDiv);
       gridRows[row].push(cellDiv);
       gridSegments[seg].push(cellDiv);
-      cellDiv.onclick = () => cellClick(cellDiv);
+
       domMainGrid.appendChild(cellDiv);
     }
   }
@@ -62,8 +72,12 @@ function prepareGrid() {
 
 prepareGrid();
 
-function setCell(cellDiv, value) {
-  cellDiv.innerHTML = value;
+function getCellValue(cellDiv) {
+  return cellDiv.valueDiv.textContent;
+}
+
+function setCellValue(cellDiv, value) {
+  cellDiv.valueDiv.textContent = value;
 
   updateOptions(cellDiv);
 
@@ -72,16 +86,45 @@ function setCell(cellDiv, value) {
   checkCells(cellDiv.col, 'colError');
 }
 
+function setCellOptions(cellDiv, newOptions) {
+  cellDiv.options = newOptions;
+  cellDiv.title = [...cellDiv.options].join();
+  cellDiv.optionDiv.innerHTML = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    .map((n) => n.toString())
+    .map((s) => (cellDiv.options.has(s) ? s : '&nbsp;'))
+    .join('');
+}
+
+function deleteCellOption(cellDiv, optionToDelete) {
+  cellDiv.options.delete(optionToDelete);
+  cellDiv.title = [...cellDiv.options].join();
+  cellDiv.optionDiv.innerHTML = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    .map((n) => n.toString())
+    .map((s) => (cellDiv.options.has(s) ? s : '&nbsp;'))
+    .join('');
+}
+
 function updateOptions(cellDiv) {
   const cellDivs = new Set(cellDiv.row.concat(cellDiv.col, cellDiv.seg));
   cellDivs.forEach((c) => {
-    c.options = getOptions(c);
-    c.title = [...c.options].join();
+    setCellOptions(c, getOptions(c));
   });
 }
 
+function getOptions(cellDiv) {
+  if (getCellValue(cellDiv) != '') {
+    return new Set();
+  }
+  const options = new Set(['1', '2', '3', '4', '5', '6', '7', '8', '9']);
+  cellDiv.col.forEach((c) => options.delete(getCellValue(c)));
+  cellDiv.row.forEach((c) => options.delete(getCellValue(c)));
+  cellDiv.seg.forEach((c) => options.delete(getCellValue(c)));
+
+  return options;
+}
+
 function cellClick(cellDiv) {
-  setCell(cellDiv, selectedNum);
+  setCellValue(cellDiv, selectedNum);
 
   if (checkCompletion()) {
     setTimeout(() => alert('You Win!'), 100);
@@ -89,7 +132,7 @@ function cellClick(cellDiv) {
 }
 
 function checkCells(cellDivs, errorClass) {
-  const values = cellDivs.map((c) => c.innerHTML);
+  const values = cellDivs.map((c) => getCellValue(c));
   const valSet = new Set();
   for (let i = 0; i < 9; i++) {
     const val = values[i];
@@ -111,7 +154,8 @@ function checkCells(cellDivs, errorClass) {
 
 function checkCompletion() {
   return gridCells.every(
-    (cellDiv) => cellDiv.innerHTML != '' && !cellDiv.className.includes('Error')
+    (cellDiv) =>
+      getCellValue(cellDiv) != '' && !cellDiv.className.includes('Error')
   );
 }
 
@@ -138,18 +182,6 @@ function handleNumClickEvent(eventArgs) {
   }
 );
 
-function getOptions(cellDiv) {
-  if (cellDiv.innerHTML != '') {
-    return new Set();
-  }
-  const options = new Set(['1', '2', '3', '4', '5', '6', '7', '8', '9']);
-  cellDiv.col.forEach((c) => options.delete(c.innerHTML));
-  cellDiv.row.forEach((c) => options.delete(c.innerHTML));
-  cellDiv.seg.forEach((c) => options.delete(c.innerHTML));
-
-  return options;
-}
-
 function solve() {
   const solutions = gridCells.reduce((acc, cellDiv) => {
     if (cellDiv.options.size == 1) {
@@ -157,7 +189,7 @@ function solve() {
     }
     return acc;
   }, []);
-  solutions.forEach((s) => setCell(s.cellDiv, s.value));
+  solutions.forEach((s) => setCellValue(s.cellDiv, s.value));
   return solutions.length;
 }
 
@@ -172,7 +204,9 @@ function obviousSets() {
   const gridGroups = [gridSegments, gridRows, gridColumns];
   gridGroups.forEach((gridGroup) => {
     gridGroup.forEach((group) => {
-      const maxSize = group.filter((cellDiv) => cellDiv.innerHTML == '').length;
+      const maxSize = group.filter(
+        (cellDiv) => getCellValue(cellDiv) == ''
+      ).length;
       for (let setSize = 2; setSize < maxSize; setSize++) {
         const cellsToSearch = group.filter(
           (cellDiv) =>
@@ -194,7 +228,9 @@ function hiddenSets() {
   const gridGroups = [gridSegments, gridRows, gridColumns];
   gridGroups.forEach((gridGroup) => {
     gridGroup.forEach((group) => {
-      const maxSize = group.filter((cellDiv) => cellDiv.innerHTML == '').length;
+      const maxSize = group.filter(
+        (cellDiv) => getCellValue(cellDiv) == ''
+      ).length;
       for (
         let combinationSize = 1;
         combinationSize < maxSize;
@@ -211,6 +247,10 @@ function hiddenSets() {
             combination.some((option) => cellDiv.options.has(option))
           );
           if (cellsWithCombination.length == combinationSize) {
+            console.log('Hidden set found:', {
+              cellsWithCombination,
+              combination,
+            });
             removeOptionsFromCells(cellsWithCombination, combination);
           }
         });
@@ -360,8 +400,7 @@ function removeOptionsFromGroup(group, optionsToRemove, excludingCells = []) {
       return;
     }
     [...optionsToRemove].forEach((option) => {
-      cellDiv.options.delete(option);
-      cellDiv.title = [...cellDiv.options].join();
+      deleteCellOption(cellDiv, option);
     });
   });
 }
@@ -370,8 +409,7 @@ function removeOptionsFromCells(cellDivs, optionsToKeep = []) {
   cellDivs.forEach((cellDiv) => {
     [...cellDiv.options].forEach((option) => {
       if (!optionsToKeep.includes(option)) {
-        cellDiv.options.delete(option);
-        cellDiv.title = [...cellDiv.options].join();
+        deleteCellOption(cellDiv, option);
       }
     });
   });
@@ -398,12 +436,14 @@ function autoFinish() {
 
 function printGrid() {
   console.log(
-    gridCells.map((c) => (c.innerHTML == '' ? ' ' : c.innerHTML)).join('')
+    gridCells
+      .map((c) => (getCellValue(c) == '' ? ' ' : getCellValue(c)))
+      .join('')
   );
 }
 
 function loadGrid(input) {
-  input.split('').forEach((v, i) => setCell(gridCells[i], v.trim()));
+  input.split('').forEach((v, i) => setCellValue(gridCells[i], v.trim()));
 }
 
 const EXAMPLES = {
