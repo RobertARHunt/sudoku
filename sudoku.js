@@ -247,10 +247,6 @@ function hiddenSets() {
             combination.some((option) => cellDiv.options.has(option))
           );
           if (cellsWithCombination.length == combinationSize) {
-            console.log('Hidden set found:', {
-              cellsWithCombination,
-              combination,
-            });
             removeOptionsFromCells(cellsWithCombination, combination);
           }
         });
@@ -513,4 +509,4 @@ const EXAMPLES = {
   },
 };
 
-loadGrid(EXAMPLES.HARD.GRID_99);
+loadGrid(EXAMPLES.HARD.GRID_2);

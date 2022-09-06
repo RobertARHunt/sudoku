@@ -74,6 +74,7 @@ div#mainGrid > div.selected {
 #numButtons {
   cursor: default;
   margin: 5px;
+  padding-top: 510px;
 }
 
 #numButtons input {
@@ -86,4 +87,9 @@ div#mainGrid > div.selected {
   background-color: darkblue;
   font-size: 50px;
   border: 5px solid black;
+}
+
+.finishButton {
+  padding-left: 74px;
+  padding-right: 74px;
 }
