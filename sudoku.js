@@ -371,6 +371,26 @@ function wingSets() {
   });
 }
 
+function yWing() {
+  const candidateCells = gridCells.filter(
+    (cellDiv) => cellDiv.options.size >= 2
+  );
+  const candidateRows = gridRows.filter(
+    (row) => row.filter((cellDiv) => cellDiv.options.size >= 2).length >= 2
+  );
+  const candidateColumns = gridRows.filter(
+    (col) => col.filter((cellDiv) => cellDiv.options.size >= 2).length >= 2
+  );
+  const candidatePivots = candidateCells.filter(
+    (candidateCell) =>
+      candidateRows.includes(candidateCell.row) &&
+      candidateColumns.includes(candidateCell.col)
+  );
+  const candidatePincers = candidateCells;
+  const combinationsOfPincers = getCombinations(candidatePincers, 2);
+  const candidateYWings = [];
+}
+
 function mergedCellOptions(cellDivs) {
   return new Set(cellDivs.flatMap((c) => [...c.options]));
 }
@@ -486,6 +506,8 @@ const EXAMPLES = {
       '  9 7     8 4       3    281     67  2  13 4  4   78  6   3     1             284',
     X_WING:
       '  38  51   87  93 1  3 5728   2  8498 19 6257   5  163964127385382659471 1 4  692',
+    Y_WING:
+      '9  2  75  5 69 23142        9         2       7   6    69  1   51   3   2 7 8   9',
     SWORD_FISH:
       '9 87351   1 98  3     2  988 546931  9  7     4325 9  25  9   1 89512 63  1847  9',
   },
