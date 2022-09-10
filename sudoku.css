@@ -7,17 +7,55 @@
   grid-template-columns: repeat(9, 11.111111111%);
   grid-template-rows: repeat(9, 11.111111111%);
   position: fixed;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%);
 }
 
 div#mainGrid > div.selected {
   background-color: lime;
 }
 
+/* CellDiv */
 #mainGrid > div {
   text-align: center;
   border: 1px solid gray;
   cursor: pointer;
   position: relative;
+}
+
+#mainGrid > div:hover {
+  background-color: rgba(231, 122, 54, 0.847);
+  box-shadow: 0px 55px 0px 0px rgba(231, 122, 54, 0.484),
+    0px 111px 0px 0px rgba(231, 122, 54, 0.484),
+    0px 167px 0px 0px rgba(231, 122, 54, 0.484),
+    0px 223px 0px 0px rgba(231, 122, 54, 0.484),
+    0px 278px 0px 0px rgba(231, 122, 54, 0.484),
+    0px 334px 0px 0px rgba(231, 122, 54, 0.484),
+    0px 389px 0px 0px rgba(231, 122, 54, 0.484),
+    0px 445px 0px 0px rgba(231, 122, 54, 0.484),
+    0px -55px 0px 0px rgba(231, 122, 54, 0.484),
+    0px -111px 0px 0px rgba(231, 122, 54, 0.484),
+    0px -167px 0px 0px rgba(231, 122, 54, 0.484),
+    0px -223px 0px 0px rgba(231, 122, 54, 0.484),
+    0px -278px 0px 0px rgba(231, 122, 54, 0.484),
+    0px -334px 0px 0px rgba(231, 122, 54, 0.484),
+    0px -389px 0px 0px rgba(231, 122, 54, 0.484),
+    0px -445px 0px 0px rgba(231, 122, 54, 0.484),
+    55px 0px 0px 0px rgba(231, 122, 54, 0.484),
+    111px 0px 0px 0px rgba(231, 122, 54, 0.484),
+    167px 0px 0px 0px rgba(231, 122, 54, 0.484),
+    223px 0px 0px 0px rgba(231, 122, 54, 0.484),
+    278px 0px 0px 0px rgba(231, 122, 54, 0.484),
+    334px 0px 0px 0px rgba(231, 122, 54, 0.484),
+    389px 0px 0px 0px rgba(231, 122, 54, 0.484),
+    445px 0px 0px 0px rgba(231, 122, 54, 0.484),
+    -55px 0px 0px 0px rgba(231, 122, 54, 0.484),
+    -111px 0px 0px 0px rgba(231, 122, 54, 0.484),
+    -167px 0px 0px 0px rgba(231, 122, 54, 0.484),
+    -223px 0px 0px 0px rgba(231, 122, 54, 0.484),
+    -278px 0px 0px 0px rgba(231, 122, 54, 0.484),
+    -334px 0px 0px 0px rgba(231, 122, 54, 0.484),
+    -389px 0px 0px 0px rgba(231, 122, 54, 0.484),
+    -445px 0px 0px 0px rgba(231, 122, 54, 0.484);
 }
 
 #mainGrid > div > div {
@@ -57,7 +95,7 @@ div#mainGrid > div.selected {
 } */
 
 .oddSeg {
-  background-color: lightgray;
+  background-color: rgba(0, 0, 0, 0.108);
 }
 
 /* body > div#mainGrid > div.empty {
