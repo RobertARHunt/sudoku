@@ -88,7 +88,6 @@ function setCellValue(cellDiv, value) {
 
 function setCellOptions(cellDiv, newOptions) {
   cellDiv.options = newOptions;
-  cellDiv.title = [...cellDiv.options].join();
   cellDiv.optionDiv.innerHTML = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     .map((n) => n.toString())
     .map((s) => (cellDiv.options.has(s) ? s : '&nbsp;'))
@@ -97,7 +96,6 @@ function setCellOptions(cellDiv, newOptions) {
 
 function deleteCellOption(cellDiv, optionToDelete) {
   cellDiv.options.delete(optionToDelete);
-  cellDiv.title = [...cellDiv.options].join();
   cellDiv.optionDiv.innerHTML = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     .map((n) => n.toString())
     .map((s) => (cellDiv.options.has(s) ? s : '&nbsp;'))
