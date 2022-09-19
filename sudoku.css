@@ -127,7 +127,7 @@ div#mainGrid > div.selected {
   border: 5px solid black;
 }
 
-.finishButton {
+.finishButtons {
   padding-left: 74px;
   padding-right: 74px;
 }

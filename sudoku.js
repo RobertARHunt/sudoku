@@ -490,6 +490,8 @@ function onlyUnique(value, index, self) {
 }
 
 function autoFinish() {
+  const startTime = Date.now();
+
   let loopCounter = 0;
   while (!checkCompletion()) {
     if (solve() == 0) {
@@ -498,10 +500,62 @@ function autoFinish() {
 
     //We need this until we have written all of the advancedEliminations
     if (++loopCounter >= 100) {
-      console.log(`autoFinish aborted after ${loopCounter} attempts!`);
+      alert(`autoFinish aborted after ${loopCounter} attempts!`);
       return;
     }
   }
+
+  const seconds = (Date.now() - startTime) / 1000;
+  alert(`Solved in ${seconds} seconds.`);
+}
+
+function bruteForce() {
+  const startTime = Date.now();
+
+  const DIRECTION = {
+    FORWARDS: 1,
+    BACKWARDS: 2,
+  };
+  let cellIndex = 0;
+  let direction = DIRECTION.FORWARDS;
+
+  const backStack = [];
+
+  while (!checkCompletion()) {
+    if (direction == DIRECTION.FORWARDS) {
+      //FORWARDS
+      if (gridCells[cellIndex].valueDiv.textContent != '') {
+        cellIndex++;
+      } else {
+        const [nextOption, ...remainingOptions] = [
+          ...gridCells[cellIndex].options,
+        ];
+        if (nextOption) {
+          setCellValue(gridCells[cellIndex], nextOption);
+          backStack.push([cellIndex, remainingOptions]);
+          cellIndex++;
+        } else {
+          direction = DIRECTION.BACKWARDS;
+        }
+      }
+    } else {
+      //BACKWARDS
+      const [backCellIndex, backRemainingOptions] = backStack.pop();
+      const [newNext, ...newRemaining] = backRemainingOptions;
+      if (newNext) {
+        cellIndex = backCellIndex;
+        setCellValue(gridCells[cellIndex], newNext);
+        backStack.push([cellIndex, newRemaining]);
+        cellIndex++;
+        direction = DIRECTION.FORWARDS;
+      } else {
+        setCellValue(gridCells[backCellIndex], '');
+      }
+    }
+  }
+
+  const seconds = (Date.now() - startTime) / 1000;
+  alert(`Solved in ${seconds} seconds.`);
 }
 
 function printGrid() {
