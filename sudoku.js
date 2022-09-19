@@ -196,6 +196,7 @@ function advancedEliminations() {
   hiddenSets();
   pointingSets();
   wingSets();
+  yWing();
 }
 
 function obviousSets() {
@@ -367,26 +368,81 @@ function wingSets() {
 
 function yWing() {
   const candidateCells = gridCells.filter(
-    (cellDiv) => cellDiv.options.size >= 2
+    (cellDiv) => cellDiv.options.size == 2
   );
-  const candidateRows = gridRows.filter(
-    (row) => row.filter((cellDiv) => cellDiv.options.size >= 2).length >= 2
-  );
-  const candidateColumns = gridRows.filter(
-    (col) => col.filter((cellDiv) => cellDiv.options.size >= 2).length >= 2
-  );
-  const candidatePivots = candidateCells.filter(
-    (candidateCell) =>
-      candidateRows.includes(candidateCell.row) &&
-      candidateColumns.includes(candidateCell.col)
-  );
-  const candidatePincers = candidateCells;
-  const combinationsOfPincers = getCombinations(candidatePincers, 2);
-  const candidateYWings = [];
+
+  candidateCells.forEach((pivot) => {
+    if (pivot.options.size != 2) return;
+
+    const candidateRowPincers = candidateCells.filter(
+      (c) =>
+        c != pivot &&
+        c.row == pivot.row &&
+        mergedCellOptions([c, pivot]).size == 3
+    );
+    const candidateColumnPincers = candidateCells.filter(
+      (c) =>
+        c != pivot &&
+        c.col == pivot.col &&
+        mergedCellOptions([c, pivot]).size == 3
+    );
+    const candidateSegmentPincers = candidateCells.filter(
+      (c) =>
+        c != pivot &&
+        c.seg == pivot.seg &&
+        mergedCellOptions([c, pivot]).size == 3
+    );
+
+    const groupPairs = getCombinations(
+      [candidateRowPincers, candidateColumnPincers, candidateSegmentPincers],
+      2
+    );
+
+    groupPairs.forEach(([group1, group2]) => {
+      group1.forEach((pincer1) => {
+        group2.forEach((pincer2) => {
+          if (
+            pincer1 != pincer2 &&
+            mergedCellOptions([pincer1, pincer2, pivot]).size == 3 &&
+            mergedCellOptions([pincer1, pincer2]).size == 3
+          ) {
+            const intersections = getPincerIntersections(pincer1, pincer2);
+            const optionsToRemove = optionsExcept(
+              mergedCellOptions([pincer1, pincer2]),
+              pivot.options
+            );
+            console.log('yWing:', { pivot, pincer1, pincer2 });
+            removeOptionsFromGroup(intersections, optionsToRemove);
+          }
+        });
+      });
+    });
+  });
+}
+
+function getPincerIntersections(pincer1, pincer2) {
+  if (pincer1.row == pincer2.row || pincer1.col == pincer2.col) return [];
+
+  const intersections = [];
+  pincer1.row.forEach((cellDiv) => {
+    if (cellDiv.col == pincer2.col) {
+      intersections.push(cellDiv);
+    }
+  });
+  pincer1.col.forEach((cellDiv) => {
+    if (cellDiv.row == pincer2.row) {
+      intersections.push(cellDiv);
+    }
+  });
+  return intersections;
 }
 
 function mergedCellOptions(cellDivs) {
   return new Set(cellDivs.flatMap((c) => [...c.options]));
+}
+
+function optionsExcept(options, optionsToExclude) {
+  return [...options].filter((option) => !optionsToExclude.has(option));
 }
 
 function getCombinations(array, size) {
@@ -507,4 +563,4 @@ const EXAMPLES = {
   },
 };
 
-loadGrid(EXAMPLES.HARD.GRID_2);
+loadGrid(EXAMPLES.HARD.GRID_99);
