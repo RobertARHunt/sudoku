@@ -131,3 +131,12 @@ div#mainGrid > div.selected {
   padding-left: 74px;
   padding-right: 74px;
 }
+
+.optionsToggleButtons {
+  padding-left: 130px;
+  padding-top: 10px;
+}
+
+.optionsOff {
+  font-size: 0px;
+}

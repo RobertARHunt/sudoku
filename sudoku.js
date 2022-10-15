@@ -59,6 +59,7 @@ function prepareGrid() {
       cellDiv.optionDiv = document.createElement('div');
       cellDiv.optionDiv.classList.add('CellOptions');
       cellDiv.appendChild(cellDiv.optionDiv);
+      cellDiv.optionDiv.classList.add('optionsOff');
 
       gridCells.push(cellDiv);
       gridColumns[col].push(cellDiv);
@@ -558,6 +559,18 @@ function bruteForce() {
   alert(`Solved in ${seconds} seconds.`);
 }
 
+function optionsOn() {
+  gridCells.forEach((cellDiv) => {
+    cellDiv.optionDiv.classList.remove('optionsOff');
+  });
+}
+
+function optionsOff() {
+  gridCells.forEach((cellDiv) => {
+    cellDiv.optionDiv.classList.add('optionsOff');
+  });
+}
+
 function printGrid() {
   console.log(
     gridCells
@@ -598,6 +611,8 @@ const EXAMPLES = {
       '    9   55      7  816  2       618    123    147    2  3  269  9      41   4    ',
     GRID_99:
       '8          36      7  9 2   5   7       457     1   3   1    68  85   1  9    4  ',
+    BRUH_WHY:
+      '                                                                                 ',
   },
   TEST: {
     OBVIOUS_SETS:
@@ -617,4 +632,4 @@ const EXAMPLES = {
   },
 };
 
-loadGrid(EXAMPLES.HARD.GRID_99);
+loadGrid(EXAMPLES.HARD.GRID_2);
