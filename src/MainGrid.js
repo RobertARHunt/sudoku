@@ -45,10 +45,28 @@ function MainGrid({ selectedNumber }) {
     getStartState(EXAMPLES.EASY.GRID_1)
   );
 
+  function newOnClickHandler(cell) {
+    return () => {
+      const newCells = gridState.cells.map((original) =>
+        original === cell ? { ...cell, value: selectedNumber } : original
+      );
+      setGridState({
+        ...gridState,
+        cells: newCells,
+      });
+    };
+  }
+
   return (
     <StyledContainer>
       {gridState.cells.map((cell, ix) => {
-        return <GridCell cell={cell} key={ix}></GridCell>;
+        return (
+          <GridCell
+            onClick={newOnClickHandler(cell)}
+            cell={cell}
+            key={ix}
+          ></GridCell>
+        );
       })}
     </StyledContainer>
   );

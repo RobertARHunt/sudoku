@@ -1,14 +1,22 @@
 import styled, { css } from 'styled-components';
 
-function GridCell({ cell: { value, options, checkered } }) {
+function GridCell({ cell: { value, options, checkered }, onClick }) {
   if (value === 0) {
     const optionsString = [1, 2, 3, 4, 5, 6, 7, 8, 9]
       .map((n) => (options.has(n) ? n : '&nbsp;'))
       .join('');
 
-    return <StyledOptions checkered={checkered}>{optionsString}</StyledOptions>;
+    return (
+      <StyledOptions checkered={checkered} onClick={onClick}>
+        {optionsString}
+      </StyledOptions>
+    );
   } else {
-    return <StyledValue checkered={checkered}>{value}</StyledValue>;
+    return (
+      <StyledValue checkered={checkered} onClick={onClick}>
+        {value}
+      </StyledValue>
+    );
   }
 }
 
