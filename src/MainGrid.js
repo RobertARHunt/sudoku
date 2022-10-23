@@ -40,7 +40,7 @@ function getStartState(example) {
   };
 }
 
-function MainGrid() {
+function MainGrid({ selectedNumber }) {
   const [gridState, setGridState] = useState(
     getStartState(EXAMPLES.EASY.GRID_1)
   );

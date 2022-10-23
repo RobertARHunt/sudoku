@@ -1,11 +1,17 @@
 import MainGrid from './MainGrid';
-import NumberButtons from './NumberButtons';
+import NumberBar from './NumberBar';
+import { useState } from 'react';
 
 function App() {
+  const [selectedNumber, setSelectedNumber] = useState();
+
   return (
     <div className="App">
-      <MainGrid></MainGrid>
-      <NumberButtons></NumberButtons>
+      <MainGrid selectedNumber={selectedNumber}></MainGrid>
+      <NumberBar
+        selectedValue={selectedNumber}
+        setSelectedValue={setSelectedNumber}
+      />
     </div>
   );
 }

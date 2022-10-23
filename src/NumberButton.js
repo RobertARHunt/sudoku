@@ -21,7 +21,7 @@ function NumberButton({ value, selectedValue, setSelectedValue }) {
       selected={selectedValue === value}
       onClick={() => setSelectedValue(value)}
     >
-      {value}
+      {value || 'X'}
     </Button>
   );
 }
