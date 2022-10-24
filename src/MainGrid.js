@@ -25,18 +25,14 @@ function generateEmptyGrid() {
 }
 
 function generateFromExample(example) {
-  if (!example) return undefined;
-
   const cells = generateEmptyGrid();
-
-  example.split('').forEach((v, i) => (cells[i].value = Number(v)));
-
+  example?.split('')?.forEach((v, i) => (cells[i].value = Number(v)));
   return cells;
 }
 
 function getStartState(example) {
   return {
-    cells: generateFromExample(example) || generateEmptyGrid(),
+    cells: generateFromExample(example),
   };
 }
 
