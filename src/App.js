@@ -3,7 +3,7 @@ import NumberBar from './NumberBar';
 import { useState } from 'react';
 
 function App() {
-  const [selectedNumber, setSelectedNumber] = useState();
+  const [selectedNumber, setSelectedNumber] = useState(0);
 
   return (
     <div className="App">
