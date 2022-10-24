@@ -3,11 +3,11 @@ import { useState } from 'react';
 import GridCell from './GridCell';
 import EXAMPLES from './EXAMPLES';
 
-function getEmptyCell(checkered) {
+function getEmptyCell(props) {
   return {
+    ...props,
     value: 0,
     options: new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]),
-    checkered,
   };
 }
 
@@ -15,9 +15,15 @@ function generateEmptyGrid() {
   const cells = [];
 
   for (let row = 0; row < 9; row++) {
-    for (let col = 0; col < 9; col++) {
-      const seg = Math.floor(col / 3) + 3 * Math.floor(row / 3);
-      cells.push(getEmptyCell(seg % 2 === 0));
+    for (let column = 0; column < 9; column++) {
+      const segment = Math.floor(column / 3) + 3 * Math.floor(row / 3);
+      const newCell = getEmptyCell({
+        row,
+        column,
+        segment,
+        checkered: segment % 2 === 0,
+      });
+      cells.push(newCell);
     }
   }
 
