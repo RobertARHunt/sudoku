@@ -38,17 +38,32 @@ function getStartState(example) {
 
 function MainGrid({ selectedNumber }) {
   const [gridState, setGridState] = useState(
-    getStartState(EXAMPLES.EASY.GRID_1)
+    getStartState(EXAMPLES.EASY.GRID_0)
   );
+
+  function updateCell(cellToUpdate, updateFunction) {
+    const newCells = gridState.cells.map((original) =>
+      cellToUpdate === original ? updateFunction(original) : original
+    );
+    return newCells;
+  }
+
+  // function updateCells(cellsToUpdate, updateFunction) {
+  //   const newCells = gridState.cells.map((original) =>
+  //     cellsToUpdate.includes(original) ? updateFunction(original) : original
+  //   );
+  //   return newCells;
+  // }
+
+  function setCellValue(newValue) {
+    return (cell) => ({ ...cell, value: newValue });
+  }
 
   function newOnClickHandler(cell) {
     return () => {
-      const newCells = gridState.cells.map((original) =>
-        original === cell ? { ...cell, value: selectedNumber } : original
-      );
       setGridState({
         ...gridState,
-        cells: newCells,
+        cells: updateCell(cell, setCellValue(selectedNumber)),
       });
     };
   }
