@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 function GridCell({ cell: { value, options, checkered }, onClick }) {
   if (value === 0) {
     const optionsString = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-      .map((n) => (options.has(n) ? n : '&nbsp;'))
+      .map((n) => (options.has(n) ? n : '\u00A0'))
       .join('');
 
     return (
