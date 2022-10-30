@@ -2,20 +2,11 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import GridCell from './GridCell';
 import EXAMPLES from './EXAMPLES';
-import {
-  getEmptyCell,
-  generateEmptyGrid,
-  generateFromExample,
-  getStartState,
-  setCellValue,
-  setCellValueInGrid,
-  setCellOptions,
-  getCellSiblings,
-} from './helpers';
+import { getStartState, setCellValueInGrid } from './helpers';
 
 function MainGrid({ selectedNumber }) {
-  const [gridState, setGridState] = useState(
-    getStartState(EXAMPLES.HARD.GRID_99)
+  const [gridState, setGridState] = useState(() =>
+    getStartState(EXAMPLES.EASY.GRID_1)
   );
 
   function newOnClickHandler(cell) {

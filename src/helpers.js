@@ -35,11 +35,11 @@ function getCellSiblings(cell, cells) {
   );
 }
 
-function setCellValueInGrid(cell, newValue, cells) {
+export function setCellValueInGrid(cell, newValue, cells) {
   const cellsWithNewValue = cells.map((original) =>
     cell === original ? setCellValue(original, newValue) : original
   );
-  const siblingCells = getCellSiblings(cell, cells);
+  const siblingCells = getCellSiblings(cell, cellsWithNewValue);
   const cellsWithNewOptions = cellsWithNewValue.map((original) =>
     siblingCells.includes(original)
       ? setCellOptions(original, cellsWithNewValue)
@@ -83,7 +83,8 @@ function generateFromExample(example) {
   return cellsWithNewOptions;
 }
 
-function getStartState(example) {
+export function getStartState(example) {
+  console.log('getStartState');
   return {
     cells: generateFromExample(example),
   };
@@ -96,7 +97,7 @@ function getCombinations(array, size) {
 
   for (let index = 0; index < array.length; index++) {
     const element = array[index];
-    if (size == 1) {
+    if (size === 1) {
       result.push([element]);
     } else {
       const remaining = array.slice(index + 1);
@@ -107,14 +108,3 @@ function getCombinations(array, size) {
 
   return result;
 }
-
-export {
-  getEmptyCell,
-  generateEmptyGrid,
-  generateFromExample,
-  getStartState,
-  setCellValue,
-  setCellValueInGrid,
-  setCellOptions,
-  getCellSiblings,
-};
