@@ -84,7 +84,6 @@ function generateFromExample(example) {
 }
 
 export function getStartState(example) {
-  console.log('getStartState');
   return {
     cells: generateFromExample(example),
   };
