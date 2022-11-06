@@ -1,16 +1,25 @@
 import MainGrid from './MainGrid';
 import NumberBar from './NumberBar';
+import Settings from './Settings';
 import { useState } from 'react';
 
 function App() {
   const [selectedNumber, setSelectedNumber] = useState(0);
+  const [cellOptionsShown, setCellOptionsShown] = useState(true);
 
   return (
     <div className="App">
-      <MainGrid selectedNumber={selectedNumber}></MainGrid>
+      <MainGrid
+        selectedNumber={selectedNumber}
+        cellOptionsShown={cellOptionsShown}
+      />
       <NumberBar
         selectedValue={selectedNumber}
         setSelectedValue={setSelectedNumber}
+      />
+      <Settings
+        cellOptionsShown={cellOptionsShown}
+        setCellOptionsShown={setCellOptionsShown}
       />
     </div>
   );

@@ -4,7 +4,7 @@ import GridCell from './GridCell';
 import EXAMPLES from './EXAMPLES';
 import { getStartState, setCellValueInGrid } from './helpers';
 
-function MainGrid({ selectedNumber }) {
+function MainGrid({ selectedNumber, cellOptionsShown }) {
   const [gridState, setGridState] = useState(() =>
     getStartState(EXAMPLES.EASY.GRID_1)
   );
@@ -26,6 +26,7 @@ function MainGrid({ selectedNumber }) {
             onClick={newOnClickHandler(cell)}
             cell={cell}
             key={ix}
+            cellOptionsShown={cellOptionsShown}
           ></GridCell>
         );
       })}
