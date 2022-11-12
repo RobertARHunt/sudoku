@@ -27,6 +27,7 @@ function MainGrid({ selectedNumber, cellOptionsShown }) {
             cell={cell}
             key={ix}
             cellOptionsShown={cellOptionsShown}
+            error={false}
           ></GridCell>
         );
       })}

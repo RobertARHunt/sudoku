@@ -6,6 +6,7 @@ import { useState } from 'react';
 function App() {
   const [selectedNumber, setSelectedNumber] = useState(0);
   const [cellOptionsShown, setCellOptionsShown] = useState(true);
+  const [errorsVisibility, setErrorsVisibility] = useState('None');
 
   return (
     <div className="App">
@@ -20,6 +21,8 @@ function App() {
       <Settings
         cellOptionsShown={cellOptionsShown}
         setCellOptionsShown={setCellOptionsShown}
+        errorsVisibility={errorsVisibility}
+        setErrorsVisibility={setErrorsVisibility}
       />
     </div>
   );

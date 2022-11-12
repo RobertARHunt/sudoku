@@ -4,6 +4,7 @@ function GridCell({
   cell: { value, options, checkered },
   onClick,
   cellOptionsShown,
+  error,
 }) {
   if (value === 0) {
     if (cellOptionsShown) {
@@ -52,6 +53,14 @@ const StyledOptions = styled(StyledCell)`
 
 const StyledValue = styled(StyledCell)`
   font-size: 50px;
+`;
+
+const styledErrorValue = styled(StyledValue)`
+  border: 2px solid red;
+`;
+
+const styledErrorOptions = styled(StyledOptions)`
+  border: 2px solid red;
 `;
 
 export default GridCell;
