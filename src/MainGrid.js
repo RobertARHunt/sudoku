@@ -9,7 +9,7 @@ function MainGrid({ selectedNumber, cellOptionsShown }) {
     getStartState(EXAMPLES.EASY.GRID_1)
   );
 
-  function newOnClickHandler(cell) {
+  function onClickHandler(cell) {
     return () => {
       setGridState({
         ...gridState,
@@ -23,7 +23,7 @@ function MainGrid({ selectedNumber, cellOptionsShown }) {
       {gridState.cells.map((cell, ix) => {
         return (
           <GridCell
-            onClick={newOnClickHandler(cell)}
+            onClick={onClickHandler(cell)}
             cell={cell}
             key={ix}
             cellOptionsShown={cellOptionsShown}
