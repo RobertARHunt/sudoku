@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 function App() {
   const [selectedNumber, setSelectedNumber] = useState(0);
-  const [cellOptionsShown, setCellOptionsShown] = useState(true);
+  const [cellOptionsShown, setCellOptionsShown] = useState(false);
   const [errorsVisibility, setErrorsVisibility] = useState('None');
 
   return (
