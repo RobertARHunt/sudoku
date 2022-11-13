@@ -6,7 +6,7 @@ import { getStartState, setCellValueInGrid } from './helpers';
 
 function MainGrid({ selectedNumber, cellOptionsShown }) {
   const [gridState, setGridState] = useState(() =>
-    getStartState(EXAMPLES.EASY.GRID_1)
+    getStartState(EXAMPLES.TEST.ERRORS)
   );
 
   function onClickHandler(cell) {
