@@ -13,16 +13,18 @@ function GridCell({
         .join('');
 
       return (
-        <StyledOptions checkered={checkered} onClick={onClick}>
+        <StyledOptions checkered={checkered} error={error} onClick={onClick}>
           {optionsString}
         </StyledOptions>
       );
     } else {
-      return <StyledValue checkered={checkered} onClick={onClick} />;
+      return (
+        <StyledValue checkered={checkered} error={error} onClick={onClick} />
+      );
     }
   } else {
     return (
-      <StyledValue checkered={checkered} onClick={onClick}>
+      <StyledValue checkered={checkered} error={error} onClick={onClick}>
         {value}
       </StyledValue>
     );
@@ -35,10 +37,14 @@ const StyledCell = styled.div`
   cursor: pointer;
 
   ${(props) =>
-    props.checkered &&
-    css`
-      background-color: rgba(0, 0, 0, 0.108);
-    `}
+    props.error
+      ? css`
+          background-color: red;
+        `
+      : props.checkered &&
+        css`
+          background-color: rgba(0, 0, 0, 0.108);
+        `}
 `;
 
 const StyledOptions = styled(StyledCell)`
@@ -53,14 +59,6 @@ const StyledOptions = styled(StyledCell)`
 
 const StyledValue = styled(StyledCell)`
   font-size: 50px;
-`;
-
-const styledErrorValue = styled(StyledValue)`
-  border: 2px solid red;
-`;
-
-const styledErrorOptions = styled(StyledOptions)`
-  border: 2px solid red;
 `;
 
 export default GridCell;

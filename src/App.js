@@ -13,6 +13,7 @@ function App() {
       <MainGrid
         selectedNumber={selectedNumber}
         cellOptionsShown={cellOptionsShown}
+        errorsVisibility={errorsVisibility}
       />
       <NumberBar
         selectedValue={selectedNumber}
