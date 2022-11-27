@@ -91,6 +91,10 @@ export function getStartState(example) {
   };
 }
 
+export function checkSolved(cells, errorCells) {
+  return cells.every((c) => c.value !== 0) && errorCells.size === 0;
+}
+
 export function getErrors(cells) {
   const errors = {
     cells: new Set(),

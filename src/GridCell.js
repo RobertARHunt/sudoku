@@ -5,6 +5,7 @@ function GridCell({
   onClick,
   cellOptionsShown,
   error,
+  solved,
 }) {
   if (value === 0) {
     if (cellOptionsShown) {
@@ -13,18 +14,33 @@ function GridCell({
         .join('');
 
       return (
-        <StyledOptions checkered={checkered} error={error} onClick={onClick}>
+        <StyledOptions
+          checkered={checkered}
+          error={error}
+          onClick={onClick}
+          solved={solved}
+        >
           {optionsString}
         </StyledOptions>
       );
     } else {
       return (
-        <StyledValue checkered={checkered} error={error} onClick={onClick} />
+        <StyledValue
+          checkered={checkered}
+          error={error}
+          onClick={onClick}
+          solved={solved}
+        />
       );
     }
   } else {
     return (
-      <StyledValue checkered={checkered} error={error} onClick={onClick}>
+      <StyledValue
+        checkered={checkered}
+        error={error}
+        onClick={onClick}
+        solved={solved}
+      >
         {value}
       </StyledValue>
     );
@@ -40,6 +56,10 @@ const StyledCell = styled.div`
     props.error
       ? css`
           background-color: red;
+        `
+      : props.solved
+      ? css`
+          background-color: green;
         `
       : props.checkered &&
         css`

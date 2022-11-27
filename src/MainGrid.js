@@ -2,21 +2,27 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import GridCell from './GridCell';
 import EXAMPLES from './EXAMPLES';
-import { getStartState, setCellValueInGrid, getErrors } from './helpers';
+import {
+  getStartState,
+  setCellValueInGrid,
+  getErrors,
+  checkSolved,
+} from './helpers';
 
 function MainGrid({ selectedNumber, cellOptionsShown, errorsVisibility }) {
   const [gridState, setGridState] = useState(() =>
-    getStartState(EXAMPLES.TEST.ERRORS)
+    getStartState(EXAMPLES.EASY.GRID_99)
   );
 
   function onClickHandler(cell) {
-    const cells = setCellValueInGrid(cell, selectedNumber, gridState.cells);
     return () => {
       if (cell.value === selectedNumber) return;
+      const cells = setCellValueInGrid(cell, selectedNumber, gridState.cells);
+      const errors = getErrors(cells);
       setGridState({
         ...gridState,
         cells,
-        errors: getErrors(cells),
+        errors,
       });
     };
   }
@@ -31,6 +37,7 @@ function MainGrid({ selectedNumber, cellOptionsShown, errorsVisibility }) {
   };
 
   const showError = showErrorFunctions[errorsVisibility] || (() => false);
+  const solved = checkSolved(gridState.cells, gridState.errors.cells);
 
   return (
     <StyledContainer>
@@ -42,6 +49,7 @@ function MainGrid({ selectedNumber, cellOptionsShown, errorsVisibility }) {
             key={ix}
             cellOptionsShown={cellOptionsShown}
             error={showError(cell)}
+            solved={solved}
           ></GridCell>
         );
       })}
