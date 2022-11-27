@@ -39,8 +39,12 @@ function MainGrid({ selectedNumber, cellOptionsShown, errorsVisibility }) {
   const showError = showErrorFunctions[errorsVisibility] || (() => false);
   const solved = checkSolved(gridState.cells, gridState.errors.cells);
 
+  // This id is only used for the crosshair.
+  // We don't want the crosshair to show when the grid is solved.
+  const id = solved ? '' : 'mainGrid';
+
   return (
-    <StyledContainer>
+    <StyledContainer id={id}>
       {gridState.cells.map((cell, ix) => {
         return (
           <GridCell
