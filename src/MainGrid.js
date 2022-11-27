@@ -12,6 +12,7 @@ function MainGrid({ selectedNumber, cellOptionsShown, errorsVisibility }) {
   function onClickHandler(cell) {
     const cells = setCellValueInGrid(cell, selectedNumber, gridState.cells);
     return () => {
+      if (cell.value === selectedNumber) return;
       setGridState({
         ...gridState,
         cells,
