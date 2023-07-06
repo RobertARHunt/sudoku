@@ -1,3 +1,4 @@
 [[redirects]]
   from = "/*"
   to = "/sudoku.html"
+  status = 200
