@@ -412,7 +412,6 @@ function yWing() {
               mergedCellOptions([pincer1, pincer2]),
               pivot.options
             );
-            console.log('yWing:', { pivot, pincer1, pincer2 });
             removeOptionsFromGroup(intersections, optionsToRemove);
           }
         });
