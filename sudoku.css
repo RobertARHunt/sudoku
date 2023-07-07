@@ -137,6 +137,15 @@ div#mainGrid > div.selected {
   padding-top: 10px;
 }
 
+.specificSolvers {
+  padding-left: 150px;
+  padding-top: 10px;
+}
+
+.specificSolverButton {
+  margin-bottom: 10px;
+}
+
 .optionsOff {
   font-size: 0px;
 }
