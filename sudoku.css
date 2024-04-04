@@ -128,18 +128,27 @@ div#mainGrid > div.selected {
 }
 
 .finishButtons {
-  padding-left: 74px;
-  padding-right: 74px;
+  padding: 5px;
+  border: 2px solid gray;
+  background-color: gold;
+  margin-top: 10px;
+  width: 337px;
 }
 
 .optionsToggleButtons {
-  padding-left: 130px;
-  padding-top: 10px;
+  width: 225px;
+  padding: 5px;
+  border: 2px solid gray;
+  background-color:aquamarine;
+  margin-top: 10px;
 }
 
 .specificSolvers {
-  padding-left: 150px;
-  padding-top: 10px;
+  margin-top: 10px;
+  position: absolute;
+  padding: 5px;
+  border: 2px solid gray;
+  background-color: blueviolet;
 }
 
 .specificSolverButton {
@@ -148,4 +157,38 @@ div#mainGrid > div.selected {
 
 .optionsOff {
   font-size: 0px;
+}
+
+.presetButtons {
+  padding-left: 190px;
+  padding-top: 10px;
+}
+
+.presetButtonGroup {
+  position: absolute;
+  padding: 5px;
+  border: 2px solid gray
+}
+
+#easyPresetButtonGroup {
+  background-color: lightgreen;
+}
+
+#moderatePresetButtonGroup {
+  margin-left: 105px;
+  background-color: lightsalmon;
+}
+
+#hardPresetButtonGroup {
+  margin-left: 237px;
+  background-color: lightcoral;
+}
+
+#otherPresetButtonGroup {
+  margin-left: 363px;
+  background-color: lightgray;
+}
+
+.presetButton {
+  margin-bottom: 10px;
 }

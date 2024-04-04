@@ -610,10 +610,10 @@ const EXAMPLES = {
       '    9   55      7  816  2       618    123    147    2  3  269  9      41   4    ',
     GRID_99:
       '8          36      7  9 2   5   7       457     1   3   1    68  85   1  9    4  ',
-    BRUH_WHY:
-      '                                                                                 ',
   },
   TEST: {
+    EMPTY_GRID:
+      '                                                                                 ',
     OBVIOUS_SETS:
       '  2 85  4    3  6   421  3        52      31 9        8    6   25 4    8     16  ',
     OBVIOUS_TRIPLES:
